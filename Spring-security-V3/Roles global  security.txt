@@ -1,0 +1,67 @@
+@Bean
+	public SecurityFilterChain filterchain(HttpSecurity http) throws Exception {
+
+		http.authorizeHttpRequests(auth -> {
+			auth.requestMatchers("/user/**").hasRole("USER")
+			.requestMatchers("/admin/**").hasRole("ADMIN").
+			
+			anyRequest().authenticated();// any request or url must be authenticated and by formlogin
+		});
+		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // disabling
+		// Session
+		// by making
+		// restapi
+		// stateless
+
+		// http.formLogin();// disabling this will not ask usr and pass via form but
+		// will ask usrname and pass in chrome ,but via postman wee need to provide in
+		// auth
+
+		http.httpBasic();
+
+		http.headers().frameOptions().sameOrigin();
+
+		http.csrf().disable();//if not disabled we have to pass csrf token for every post and put in headers 
+
+		return http.build();
+
+	}
+
+
+
+
+@GetMapping("/user")
+	public String user()
+	{
+		
+
+		return "USER roles only";
+	}
+	
+	@GetMapping("/user/{name}")
+	public String userbyName(@PathVariable("name") String name)
+	{
+		
+
+		return name+"USER roles only";
+	}
+
+	
+
+	@GetMapping("/admin")
+	public String admin()
+	{
+		
+
+		return "ADMIN roles only";
+	}
+	
+	@GetMapping("/admin/{name}")
+	public String adminbyName(@PathVariable("name") String name)
+	{
+		
+
+		return name+"ADMIN roles only";
+	}
+
+in post man , pass the auth/credentials  for the url for respective roles and get op else forbidden error

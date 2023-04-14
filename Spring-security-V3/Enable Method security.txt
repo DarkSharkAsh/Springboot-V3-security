@@ -1,0 +1,15 @@
+
+
+
+@Configuration
+@EnableWebSecurity
+public class BasicAuthSecurityConfig {
+
+@PreAuthorize("hasRole('USER')")
+	@GetMapping("/user/{id}/us")
+	public String userbuId(@PathVariable("id")int  id)
+	{
+		
+
+		return "USER roles only";
+	}
